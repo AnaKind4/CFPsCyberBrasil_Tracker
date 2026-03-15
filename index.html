@@ -19,7 +19,6 @@
             overflow-x: hidden;
         }
 
-        /* Efeito de scanlines */
         body::before {
             content: '';
             position: fixed;
@@ -44,7 +43,6 @@
             padding: 0 1rem;
         }
 
-        /* Header */
         header {
             border-bottom: 2px solid #00ff41;
             background-color: #0a0e27;
@@ -71,7 +69,6 @@
             opacity: 0.5;
         }
 
-        /* Filtros */
         .filters-section {
             background-color: #0f1535;
             border-bottom: 2px solid #00ff41;
@@ -144,7 +141,6 @@
             text-shadow: none;
         }
 
-        /* Tag Search */
         .tag-search-section {
             background-color: #0f1535;
             border-bottom: 2px solid #00ff41;
@@ -214,7 +210,6 @@
             font-weight: bold;
         }
 
-        /* Events Grid */
         .events-section {
             padding: 2rem 0;
         }
@@ -365,7 +360,6 @@
             opacity: 0.75;
         }
 
-        /* Footer */
         footer {
             border-top: 2px solid #00ff41;
             padding: 1.5rem 0;
@@ -374,7 +368,6 @@
             opacity: 0.5;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             h1 {
                 font-size: 1.5rem;
@@ -410,7 +403,6 @@
             font-weight: bold;
         }
 
-        /* CTA Section */
         .cta-section {
             background-color: #0f1535;
             border: 2px solid #00ff41;
@@ -463,14 +455,13 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
+        
         <header>
             <h1>$ CFP_CYBERSECURITY_EVENTS</h1>
             <p class="subtitle">> Consolidado de CFPs (Call For Papers) abertos para Eventos de Cibersegurança no Brasil</p>
             <p class="stats" id="stats">> Total de eventos: 0 | Filtrados: 0</p>
         </header>
 
-        <!-- Filters Section -->
         <div class="filters-section">
             <p class="filters-title">$ filtros disponíveis:</p>
             <div class="filters-grid">
@@ -499,7 +490,6 @@
             <button class="button-reset" onclick="resetFilters()">$ reset</button>
         </div>
 
-        <!-- Tag Search Section -->
         <div class="tag-search-section">
             <p class="tag-search-label">$ buscar por tópico:</p>
             <div class="tag-search-container">
@@ -509,23 +499,21 @@
             <div class="active-tags" id="activeTags"></div>
         </div>
 
-        <!-- Events Section -->
         <div class="events-section">
             <div id="eventsContainer" class="events-grid"></div>
         </div>
 
-        <!-- CTA Section -->
         <div class="cta-section">
             <p class="cta-title">$ Sentiu falta de algum evento com CFP Aberto?</p>
             <p class="cta-description">
                 Entre em contato comigo pelo LinkedIn. Vamos fortalecer a comunidade de segurança brasileira juntos!
             </p>
             <a href="https://www.linkedin.com/in/anacarolinamarinho21/" target="_blank" class="cta-button">
-                💼 Conecte comigo no LinkedIn
+                💼 Conecte-se comigo no LinkedIn
             </a>
         </div>
 
-        <!-- Footer -->
+
         <footer>
             <p>> CFP Cybersecurity Events Brasil 2026 | Desenvolvido por Ana Carolina Marinho </p>
             <p id="lastUpdate">> Última atualização: </p>
@@ -533,10 +521,10 @@
     </div>
 
     <script>
-        // Função para calcular dias até o deadline
+
         function calculateDaysUntilDeadline(deadlineStr) {
             const today = new Date();
-            today.setHours(0, 0, 0, 0); // Zera as horas para comparação correta
+            today.setHours(0, 0, 0, 0);
             
             const deadline = new Date(deadlineStr + 'T00:00:00');
             const timeDiff = deadline - today;
@@ -627,7 +615,6 @@
         let selectedTags = new Set();
         let allEvents = [...CFP_EVENTS];
 
-        // Inicializar
         function init() {
             populateStates();
             renderEvents();
@@ -635,14 +622,12 @@
             updateStats();
             document.getElementById('lastUpdate').textContent = `>> Última atualização: ${new Date().toLocaleDateString('pt-BR')}`;
             
-            // Atualizar a cada minuto para manter os dias atualizados
             setInterval(() => {
                 renderEvents();
                 updateStats();
             }, 60000); // 60 segundos
         }
 
-        // Popular estados
         function populateStates() {
             const processedEvents = processEvents();
             const states = [...new Set(processedEvents.map(e => e.state))].sort();
@@ -655,7 +640,6 @@
             });
         }
 
-        // Setup listeners
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', renderEvents);
 
@@ -670,7 +654,6 @@
             });
         }
 
-        // Busca de tags
         function handleTagSearch(e) {
             const input = e.target.value.toLowerCase();
             const suggestions = document.getElementById('tagSuggestions');
@@ -735,13 +718,11 @@
             renderEvents();
         }
 
-        // Processar eventos e calcular daysUntilDeadline
         function processEvents() {
             return CFP_EVENTS.map(event => {
                 const deadline = event['Prazo Final para Submissão:'] || event.deadline;
                 const daysUntil = calculateDaysUntilDeadline(deadline);
                 
-                // Determinar status baseado em daysUntilDeadline
                 let status = event.status;
                 if (daysUntil < 0) {
                     status = 'closed';
@@ -758,7 +739,6 @@
             });
         }
 
-        // Renderizar eventos
         function renderEvents() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
 
@@ -780,7 +760,6 @@
                 return matchesSearch && matchesCategory && matchesState && matchesStatus && matchesTags;
             });
 
-            // Ordenar por deadline
             filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
 
             const container = document.getElementById('eventsContainer');
@@ -883,7 +862,6 @@
             return date.toLocaleDateString('pt-BR');
         }
 
-        // Iniciar
         init();
     </script>
 </body>
