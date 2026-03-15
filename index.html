@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CFP Cibersegurança Brasil 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0a0e27;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Efeito de scanlines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            border-bottom: 2px solid #00ff41;
+            background-color: #0a0e27;
+            padding: 1.5rem 0;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        h1 {
+            font-size: 2rem;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px #00ff41;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.75;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Filtros */
+        .filters-section {
+            background-color: #0f1535;
+            border-bottom: 2px solid #00ff41;
+            padding: 1.5rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .filters-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            opacity: 0.75;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.75;
+        }
+
+        input[type="text"],
+        select {
+            background-color: #0a0e27;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        input[type="text"]::placeholder {
+            color: #00ff41;
+            opacity: 0.5;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            box-shadow: 0 0 10px #00ff41;
+            background-color: #0f1535;
+        }
+
+        .button-reset {
+            background-color: #0a0e27;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 0.5rem 1rem;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .button-reset:hover {
+            background-color: #00ff41;
+            color: #0a0e27;
+            text-shadow: none;
+        }
+
+        /* Tag Search */
+        .tag-search-section {
+            background-color: #0f1535;
+            border-bottom: 2px solid #00ff41;
+            padding: 1rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .tag-search-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            opacity: 0.75;
+        }
+
+        .tag-search-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .tag-search-input {
+            width: 100%;
+            background-color: #0a0e27;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+        }
+
+        .tag-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background-color: #0f1535;
+            border: 1px solid #00ff41;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 100;
+            display: none;
+        }
+
+        .tag-suggestions.show {
+            display: block;
+        }
+
+        .tag-suggestion {
+            padding: 0.5rem;
+            border-bottom: 1px solid #00ff41;
+            border-bottom-color: rgba(0, 255, 65, 0.2);
+            cursor: pointer;
+            transition: all 0.2s;
+            background-color: #0f1535;
+            color: #00ff41;
+            font-size: 0.85rem;
+        }
+
+        .tag-suggestion:hover,
+        .tag-suggestion.selected {
+            background-color: #00ff41;
+            color: #0a0e27;
+        }
+
+        .tag-suggestion.selected::before {
+            content: '✓ ';
+            font-weight: bold;
+        }
+
+        /* Events Grid */
+        .events-section {
+            padding: 2rem 0;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .event-card {
+            border: 2px solid #00ff41;
+            background-color: #0f1535;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.1);
+        }
+
+        .event-card:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .event-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .event-category {
+            display: inline-block;
+            background-color: #00ff41;
+            color: #0a0e27;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .event-location {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.75;
+        }
+
+        .event-org {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .event-description {
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            line-height: 1.5;
+            opacity: 0.85;
+        }
+
+        .event-dates {
+            font-size: 0.8rem;
+            margin: 0.75rem 0;
+            opacity: 0.7;
+        }
+
+        .event-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .event-topic {
+            background-color: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            color: #00ff41;
+        }
+
+        .event-status {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .status-open {
+            background-color: #00ff41;
+            color: #0a0e27;
+        }
+
+        .status-closing {
+            background-color: #ffaa00;
+            color: #0a0e27;
+        }
+
+        .status-closed {
+            background-color: #ff4444;
+            color: #fff;
+        }
+
+        .status-upcoming {
+            background-color: #4444ff;
+            color: #fff;
+        }
+
+        .event-links {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .event-link {
+            flex: 1;
+            background-color: #0a0e27;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 0.5rem;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .event-link:hover {
+            background-color: #00ff41;
+            color: #0a0e27;
+        }
+
+        .no-events {
+            text-align: center;
+            padding: 2rem;
+            border: 2px solid #00ff41;
+            background-color: #0f1535;
+        }
+
+        .no-events-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .no-events-text {
+            opacity: 0.75;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid #00ff41;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .active-tags {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .active-tag-badge {
+            display: inline-block;
+            background-color: rgba(0, 255, 65, 0.2);
+            border: 1px solid #00ff41;
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .active-tag-close {
+            cursor: pointer;
+            margin-left: 0.3rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>$ CFP_CYBERSECURITY_EVENTS</h1>
+            <p class="subtitle">> Listagem de Call For Papers - Eventos de Cibersegurança Brasil 2026</p>
+            <p class="stats" id="stats">> Total de eventos: 0 | Filtrados: 0</p>
+        </header>
+
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <p class="filters-title">$ filtros disponíveis:</p>
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">$ buscar:</label>
+                    <input type="text" id="searchInput" placeholder="evento, organização...">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">$ categoria:</label>
+                    <select id="categorySelect">
+                        <option value="">-- todas --</option>
+                        <option value="red-team">Red Team</option>
+                        <option value="blue-team">Blue Team</option>
+                        <option value="purple-team">Purple Team</option>
+                        <option value="orange-team">Orange Team</option>
+                        <option value="cloud">Cloud</option>
+                        <option value="network">Network</option>
+                        <option value="dfir">DFIR</option>
+                        <option value="grc">GRC</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">$ estado:</label>
+                    <select id="stateSelect">
+                        <option value="">-- todos --</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">$ status:</label>
+                    <select id="statusSelect">
+                        <option value="">-- todos --</option>
+                        <option value="open">Aberto</option>
+                        <option value="closing-soon">Encerrando</option>
+                        <option value="closed">Fechado</option>
+                        <option value="upcoming">Em Breve</option>
+                    </select>
+                </div>
+            </div>
+            <button class="button-reset" onclick="resetFilters()">$ reset</button>
+        </div>
+
+        <!-- Tag Search Section -->
+        <div class="tag-search-section">
+            <p class="tag-search-label">$ buscar por tópico:</p>
+            <div class="tag-search-container">
+                <input type="text" id="tagSearchInput" class="tag-search-input" placeholder="$ buscar tópicos (ex: pentest, soc)...">
+                <div id="tagSuggestions" class="tag-suggestions"></div>
+            </div>
+            <div class="active-tags" id="activeTags"></div>
+        </div>
+
+        <!-- Events Section -->
+        <div class="events-section">
+            <div id="eventsContainer" class="events-grid"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>> CFP Cybersecurity Events Brasil 2026 | Desenvolvido com ❤️ para a comunidade de segurança</p>
+            <p id="lastUpdate">> Última atualização: </p>
+        </footer>
+    </div>
+
+    <script>
+        // Dados dos eventos
+        const CFP_EVENTS = [
+            {
+                id: 'fortalsec-2026',
+                name: 'FORTALSEC 2026',
+                organization: 'FORTALSEC',
+                date: '2026-05-23',
+                deadline: '2026-04-15',
+                location: 'Fortaleza',
+                state: 'CE',
+                category: 'red-team',
+                description: 'Conferência dedicada a segurança ofensiva e pentest.',
+                topics: ['Segurança Ofensiva', 'Pentest', 'Experiências Práticas', 'Hacking Ético'],
+                cfpLink: 'https://fortalsec.com.br/cfp',
+                eventLink: 'https://fortalsec.com.br',
+                status: 'open',
+                daysUntilDeadline: 32
+            },
+            {
+                id: 'sirena-2026',
+                name: 'SIRENA Conference 2026',
+                organization: 'SIRENA',
+                date: '2026-05-14',
+                deadline: '2026-03-31',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'purple-team',
+                description: 'Conferência dedicada a Risco Humano, Conscientização e Segurança da Informação.',
+                topics: ['Risco Humano', 'Conscientização', 'Engenharia Social', 'Prevenção a Fraudes'],
+                cfpLink: 'https://sirena.org.br/cfp',
+                eventLink: 'https://sirena.org.br',
+                status: 'open',
+                daysUntilDeadline: 16
+            },
+            {
+                id: 'bsides-sp-2026',
+                name: 'BSides São Paulo 2026',
+                organization: 'BSides',
+                date: '2026-06-20',
+                deadline: '2026-05-01',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'red-team',
+                description: 'Conferência comunitária de segurança focada em pentest e segurança ofensiva.',
+                topics: ['Pentest', 'Segurança Ofensiva', 'Experiências Práticas'],
+                cfpLink: 'https://bsides.org.br/sp',
+                eventLink: 'https://bsides.org.br',
+                status: 'open',
+                daysUntilDeadline: 47
+            },
+            {
+                id: 'bsides-curitiba-2026',
+                name: 'BSides Curitiba 2026',
+                organization: 'BSides',
+                date: '2026-07-18',
+                deadline: '2026-06-01',
+                location: 'Curitiba',
+                state: 'PR',
+                category: 'blue-team',
+                description: 'Conferência comunitária com foco em defesa e monitoramento.',
+                topics: ['Monitoramento', 'SOC', 'Resposta a Incidentes'],
+                cfpLink: 'https://bsides.org.br/curitiba',
+                eventLink: 'https://bsides.org.br',
+                status: 'open',
+                daysUntilDeadline: 78
+            },
+            {
+                id: 'secops-summit-2026',
+                name: 'SecOps Summit 2026',
+                organization: 'SecOps',
+                date: '2026-03-20',
+                deadline: '2026-02-20',
+                location: 'Porto Alegre',
+                state: 'RS',
+                category: 'blue-team',
+                description: 'Summit dedicado a operações de segurança, monitoramento e resposta a incidentes.',
+                topics: ['SOC', 'Monitoramento', 'Resposta a Incidentes'],
+                cfpLink: 'https://secops-summit.com.br/cfp',
+                eventLink: 'https://secops-summit.com.br',
+                status: 'closing-soon',
+                daysUntilDeadline: 7
+            },
+            {
+                id: 'you-shot-sheriff-2026',
+                name: 'You Sh0t the Sheriff 2026',
+                organization: 'You Sh0t the Sheriff',
+                date: '2026-04-25',
+                deadline: '2026-03-15',
+                location: 'Brasília',
+                state: 'DF',
+                category: 'red-team',
+                description: 'Conferência focada em pentest, segurança ofensiva e hacking ético.',
+                topics: ['Pentest', 'Hacking Ético', 'Segurança Ofensiva'],
+                cfpLink: 'https://youshottesheriff.com.br/cfp',
+                eventLink: 'https://youshottesheriff.com.br',
+                status: 'open',
+                daysUntilDeadline: 1
+            },
+            {
+                id: 'forum-csirt-2026',
+                name: 'Fórum de CSIRTs Brasil 2026',
+                organization: 'CERT.br',
+                date: '2026-04-15',
+                deadline: '2026-03-01',
+                location: 'Rio de Janeiro',
+                state: 'RJ',
+                category: 'dfir',
+                description: 'Fórum dedicado a resposta a incidentes e forense digital.',
+                topics: ['CSIRT', 'Forense Digital', 'Resiliência'],
+                cfpLink: 'https://csirt-forum.cert.br/cfp',
+                eventLink: 'https://csirt-forum.cert.br',
+                status: 'open',
+                daysUntilDeadline: 16
+            },
+            {
+                id: 'cryptorave-2026',
+                name: 'CryptoRave 2026',
+                organization: 'CryptoRave',
+                date: '2026-05-30',
+                deadline: '2026-04-15',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'grc',
+                description: 'Conferência sobre criptografia, privacidade e segurança digital.',
+                topics: ['Criptografia', 'Privacidade', 'Segurança Digital', 'Ativismo Digital'],
+                cfpLink: 'https://cryptorave.org/cfp',
+                eventLink: 'https://cryptorave.org',
+                status: 'open',
+                daysUntilDeadline: 32
+            },
+            {
+                id: 'bsides-rio-2026',
+                name: 'BSides Rio 2026',
+                organization: 'BSides',
+                date: '2026-08-15',
+                deadline: '2026-07-01',
+                location: 'Rio de Janeiro',
+                state: 'RJ',
+                category: 'purple-team',
+                description: 'Conferência comunitária com foco em threat intelligence e análise de ameaças.',
+                topics: ['Threat Intelligence', 'Análise de Ameaças', 'CTI', 'Inteligência'],
+                cfpLink: 'https://bsides.org.br/rio',
+                eventLink: 'https://bsides.org.br',
+                status: 'upcoming',
+                daysUntilDeadline: 138
+            },
+            {
+                id: 'cloud-security-2026',
+                name: 'Cloud Security Summit 2026',
+                organization: 'Cloud Security',
+                date: '2026-06-10',
+                deadline: '2026-05-10',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'cloud',
+                description: 'Summit dedicado a segurança em cloud computing, AWS, Azure e GCP.',
+                topics: ['Cloud Security', 'AWS', 'Azure', 'GCP'],
+                cfpLink: 'https://cloudsecurity-summit.com.br/cfp',
+                eventLink: 'https://cloudsecurity-summit.com.br',
+                status: 'open',
+                daysUntilDeadline: 57
+            },
+            {
+                id: 'appsec-brazil-2026',
+                name: 'AppSec Brazil 2026',
+                organization: 'OWASP',
+                date: '2026-07-25',
+                deadline: '2026-06-15',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'orange-team',
+                description: 'Conferência focada em segurança de aplicações e DevSecOps.',
+                topics: ['AppSec', 'DevSecOps', 'Segurança de Aplicações'],
+                cfpLink: 'https://appsec.org.br/cfp',
+                eventLink: 'https://appsec.org.br',
+                status: 'open',
+                daysUntilDeadline: 93
+            },
+            {
+                id: 'network-security-2026',
+                name: 'Network Security Summit 2026',
+                organization: 'Network Security',
+                date: '2026-09-10',
+                deadline: '2026-08-01',
+                location: 'Belo Horizonte',
+                state: 'MG',
+                category: 'network',
+                description: 'Summit dedicado a segurança de redes, firewalls e NDR.',
+                topics: ['Redes', 'Firewall', 'NDR', 'Endpoint Security'],
+                cfpLink: 'https://netsecurity-summit.com.br/cfp',
+                eventLink: 'https://netsecurity-summit.com.br',
+                status: 'upcoming',
+                daysUntilDeadline: 170
+            }
+        ];
+
+        let selectedTags = new Set();
+        let allEvents = [...CFP_EVENTS];
+
+        // Inicializar
+        function init() {
+            populateStates();
+            renderEvents();
+            setupEventListeners();
+            updateStats();
+            document.getElementById('lastUpdate').textContent = `>> Última atualização: ${new Date().toLocaleDateString('pt-BR')}`;
+        }
+
+        // Popular estados
+        function populateStates() {
+            const states = [...new Set(CFP_EVENTS.map(e => e.state))].sort();
+            const stateSelect = document.getElementById('stateSelect');
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+        }
+
+        // Setup listeners
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', renderEvents);
+            document.getElementById('categorySelect').addEventListener('change', renderEvents);
+            document.getElementById('stateSelect').addEventListener('change', renderEvents);
+            document.getElementById('statusSelect').addEventListener('change', renderEvents);
+            document.getElementById('tagSearchInput').addEventListener('input', handleTagSearch);
+            document.getElementById('tagSearchInput').addEventListener('focus', showTagSuggestions);
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.tag-search-container')) {
+                    document.getElementById('tagSuggestions').classList.remove('show');
+                }
+            });
+        }
+
+        // Busca de tags
+        function handleTagSearch(e) {
+            const input = e.target.value.toLowerCase();
+            const suggestions = document.getElementById('tagSuggestions');
+            
+            if (!input.trim()) {
+                suggestions.classList.remove('show');
+                return;
+            }
+
+            const allTags = new Set();
+            CFP_EVENTS.forEach(event => {
+                event.topics.forEach(topic => allTags.add(topic));
+            });
+
+            const filtered = Array.from(allTags)
+                .filter(tag => tag.toLowerCase().includes(input))
+                .slice(0, 8);
+
+            suggestions.innerHTML = filtered.map(tag => `
+                <div class="tag-suggestion ${selectedTags.has(tag) ? 'selected' : ''}" onclick="toggleTag('${tag}')">
+                    ${tag}
+                </div>
+            `).join('');
+
+            suggestions.classList.add('show');
+        }
+
+        function showTagSuggestions() {
+            if (document.getElementById('tagSearchInput').value.trim()) {
+                handleTagSearch({ target: document.getElementById('tagSearchInput') });
+            }
+        }
+
+        function toggleTag(tag) {
+            if (selectedTags.has(tag)) {
+                selectedTags.delete(tag);
+            } else {
+                selectedTags.add(tag);
+            }
+            document.getElementById('tagSearchInput').value = '';
+            document.getElementById('tagSuggestions').classList.remove('show');
+            updateActiveTags();
+            renderEvents();
+        }
+
+        function updateActiveTags() {
+            const container = document.getElementById('activeTags');
+            if (selectedTags.size === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `<strong>Filtros ativos:</strong> ` + Array.from(selectedTags).map(tag => `
+                <span class="active-tag-badge">${tag} <span class="active-tag-close" onclick="removeTag('${tag}')">✕</span></span>
+            `).join('');
+        }
+
+        function removeTag(tag) {
+            selectedTags.delete(tag);
+            updateActiveTags();
+            renderEvents();
+        }
+
+        // Renderizar eventos
+        function renderEvents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categorySelect').value;
+            const state = document.getElementById('stateSelect').value;
+            const status = document.getElementById('statusSelect').value;
+
+            const filtered = CFP_EVENTS.filter(event => {
+                const matchesSearch = !searchTerm || 
+                    event.name.toLowerCase().includes(searchTerm) ||
+                    event.organization.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !category || event.category === category;
+                const matchesState = !state || event.state === state;
+                const matchesStatus = !status || event.status === status;
+                const matchesTags = selectedTags.size === 0 || 
+                    event.topics.some(topic => selectedTags.has(topic));
+
+                return matchesSearch && matchesCategory && matchesState && matchesStatus && matchesTags;
+            });
+
+            // Ordenar por deadline
+            filtered.sort((a, b) => new Date(a.deadline) - new Date(b.deadline));
+
+            const container = document.getElementById('eventsContainer');
+            
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="no-events" style="grid-column: 1/-1;">
+                        <p class="no-events-title">$ nenhum evento encontrado</p>
+                        <p class="no-events-text">Tente ajustar seus filtros de busca</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = filtered.map(event => `
+                    <div class="event-card">
+                        <div class="event-title">${event.name}</div>
+                        <span class="event-category">${getCategoryLabel(event.category)}</span>
+                        <span class="event-status status-${event.status}">${getStatusLabel(event.status)}</span>
+                        <div class="event-org">$ org: ${event.organization}</div>
+                        <div class="event-description">${event.description}</div>
+                        <div class="event-dates">
+                            <div>$ evento: ${formatDate(event.date)}</div>
+                            <div>$ deadline: ${formatDate(event.deadline)}</div>
+                            <div>$ dias restantes: ${event.daysUntilDeadline}</div>
+                        </div>
+                        <div class="event-location">$ local: ${event.location} (${event.state})</div>
+                        <div class="event-topics">
+                            ${event.topics.map(topic => `<span class="event-topic">${topic}</span>`).join('')}
+                        </div>
+                        <div class="event-links">
+                            <a href="${event.cfpLink}" target="_blank" class="event-link">CFP</a>
+                            <a href="${event.eventLink}" target="_blank" class="event-link">Evento</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            updateStats();
+        }
+
+        function updateStats() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categorySelect').value;
+            const state = document.getElementById('stateSelect').value;
+            const status = document.getElementById('statusSelect').value;
+
+            const filtered = CFP_EVENTS.filter(event => {
+                const matchesSearch = !searchTerm || 
+                    event.name.toLowerCase().includes(searchTerm) ||
+                    event.organization.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !category || event.category === category;
+                const matchesState = !state || event.state === state;
+                const matchesStatus = !status || event.status === status;
+                const matchesTags = selectedTags.size === 0 || 
+                    event.topics.some(topic => selectedTags.has(topic));
+
+                return matchesSearch && matchesCategory && matchesState && matchesStatus && matchesTags;
+            });
+
+            document.getElementById('stats').textContent = 
+                `>> Total de eventos: ${CFP_EVENTS.length} | Filtrados: ${filtered.length}`;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categorySelect').value = '';
+            document.getElementById('stateSelect').value = '';
+            document.getElementById('statusSelect').value = '';
+            selectedTags.clear();
+            updateActiveTags();
+            renderEvents();
+        }
+
+        function getCategoryLabel(category) {
+            const labels = {
+                'red-team': 'RED TEAM',
+                'blue-team': 'BLUE TEAM',
+                'purple-team': 'PURPLE TEAM',
+                'orange-team': 'ORANGE TEAM',
+                'cloud': 'CLOUD',
+                'network': 'NETWORK',
+                'dfir': 'DFIR',
+                'grc': 'GRC'
+            };
+            return labels[category] || category;
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'open': 'ABERTO',
+                'closing-soon': 'ENCERRANDO',
+                'closed': 'FECHADO',
+                'upcoming': 'EM BREVE'
+            };
+            return labels[status] || status;
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr + 'T00:00:00');
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        // Iniciar
+        init();
+    </script>
+</body>
+</html>
