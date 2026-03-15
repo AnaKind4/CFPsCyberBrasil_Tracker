@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CFP Cibersegurança Brasil 2026</title>
+    <title>CFP Cibersegurança Brasil</title>
     <style>
         * {
             margin: 0;
@@ -409,6 +409,56 @@
             margin-left: 0.3rem;
             font-weight: bold;
         }
+
+        /* CTA Section */
+        .cta-section {
+            background-color: #0f1535;
+            border: 2px solid #00ff41;
+            border-radius: 4px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .cta-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        .cta-description {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            opacity: 0.85;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: #00ff41;
+            color: #0a0e27;
+            padding: 0.75rem 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #00ff41;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            border-radius: 4px;
+        }
+
+        .cta-button:hover {
+            background-color: #0a0e27;
+            color: #00ff41;
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.5);
+        }
+
+        .cta-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -416,7 +466,7 @@
         <!-- Header -->
         <header>
             <h1>$ CFP_CYBERSECURITY_EVENTS</h1>
-            <p class="subtitle">> Listagem de Call For Papers - Eventos de Cibersegurança Brasil 2026</p>
+            <p class="subtitle">> Listagem de Call For Papers - Eventos de Cibersegurança Brasil</p>
             <p class="stats" id="stats">> Total de eventos: 0 | Filtrados: 0</p>
         </header>
 
@@ -477,191 +527,114 @@
             <div id="eventsContainer" class="events-grid"></div>
         </div>
 
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <p class="cta-title">$ Quer divulgar seu evento?</p>
+            <p class="cta-description">
+                Sentiu falta de algum evento com CFP aberto? É organizador de alguum evento de cibersegurança e deseja que seu CFP seja listado aqui?,
+                entre em contato comigo pelo LinkedIn. Vamos fortalecer a comunidade de segurança brasileira juntos!
+            </p>
+            <a href="https://www.linkedin.com/in/anacarolinamarinho21/" target="_blank" class="cta-button">
+                💼 Conecte-se comigo no LinkedIn
+            </a>
+        </div>
+
         <!-- Footer -->
         <footer>
-            <p>> CFP Cybersecurity Events Brasil 2026 | Desenvolvido com ❤️ para a comunidade de segurança</p>
+            <p>> CFP Cybersecurity Events Brasil 2026 | Desenvolvido por Ana Carolina Marinho </p>
             <p id="lastUpdate">> Última atualização: </p>
         </footer>
     </div>
 
     <script>
+        // Função para calcular dias até o deadline
+        function calculateDaysUntilDeadline(deadlineStr) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // Zera as horas para comparação correta
+            
+            const deadline = new Date(deadlineStr + 'T00:00:00');
+            const timeDiff = deadline - today;
+            const daysDiff = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+            
+            return daysDiff;
+        }
+
         // Dados dos eventos
         const CFP_EVENTS = [
             {
                 id: 'fortalsec-2026',
                 name: 'FORTALSEC 2026',
                 organization: 'FORTALSEC',
-                date: '2026-05-23',
-                deadline: '2026-04-15',
+                date: '2026-04-25',
+                deadline: '2026-03-23',
                 location: 'Fortaleza',
                 state: 'CE',
-                category: 'red-team',
-                description: 'Conferência dedicada a segurança ofensiva e pentest.',
+                category: 'Cibersegurança',
+                description: 'FortalSec é um evento de Cibersegurança com a essência do Nordeste do Brasil.',
                 topics: ['Segurança Ofensiva', 'Pentest', 'Experiências Práticas', 'Hacking Ético'],
-                cfpLink: 'https://fortalsec.com.br/cfp',
-                eventLink: 'https://fortalsec.com.br',
+                cfpLink: 'https://docs.google.com/forms/d/e/1FAIpQLSdAHd_EoAPoKIlXLnvDQBI80QVKyOaA3tasF6-OtTI4hH2lJQ/viewform',
+                eventLink: 'https://www.sympla.com.br/evento/fortalsec-2026/3230504?referrer=www.bing.com&referrer=www.bing.com',
                 status: 'open',
-                daysUntilDeadline: 32
-            },
-            {
-                id: 'sirena-2026',
-                name: 'SIRENA Conference 2026',
-                organization: 'SIRENA',
-                date: '2026-05-14',
-                deadline: '2026-03-31',
-                location: 'São Paulo',
-                state: 'SP',
-                category: 'purple-team',
-                description: 'Conferência dedicada a Risco Humano, Conscientização e Segurança da Informação.',
-                topics: ['Risco Humano', 'Conscientização', 'Engenharia Social', 'Prevenção a Fraudes'],
-                cfpLink: 'https://sirena.org.br/cfp',
-                eventLink: 'https://sirena.org.br',
-                status: 'open',
-                daysUntilDeadline: 16
             },
             {
                 id: 'bsides-sp-2026',
                 name: 'BSides São Paulo 2026',
                 organization: 'BSides',
-                date: '2026-06-20',
-                deadline: '2026-05-01',
+                date: '2026-05-17',
+                deadline: '2026-04-01',
                 location: 'São Paulo',
                 state: 'SP',
-                category: 'red-team',
-                description: 'Conferência comunitária de segurança focada em pentest e segurança ofensiva.',
-                topics: ['Pentest', 'Segurança Ofensiva', 'Experiências Práticas'],
-                cfpLink: 'https://bsides.org.br/sp',
-                eventLink: 'https://bsides.org.br',
+                category: 'Cibersegurança',
+                description: 'Security BSides é um evento que reforça a cena hacking em sua raiz.',
+                topics: ['Blue Team', 'Red Team', 'Threat Intelligence'],
+                cfpLink: 'https://docs.google.com/forms/d/e/1FAIpQLScKhAVxoL-B0qOt47atk4mOvN9uGbfJvspelsOlm0V2XNTznQ/viewform',
+                eventLink: 'https://securitybsides.com.br/2026/',
                 status: 'open',
-                daysUntilDeadline: 47
-            },
-            {
-                id: 'bsides-curitiba-2026',
-                name: 'BSides Curitiba 2026',
-                organization: 'BSides',
-                date: '2026-07-18',
-                deadline: '2026-06-01',
-                location: 'Curitiba',
-                state: 'PR',
-                category: 'blue-team',
-                description: 'Conferência comunitária com foco em defesa e monitoramento.',
-                topics: ['Monitoramento', 'SOC', 'Resposta a Incidentes'],
-                cfpLink: 'https://bsides.org.br/curitiba',
-                eventLink: 'https://bsides.org.br',
-                status: 'open',
-                daysUntilDeadline: 78
-            },
-            {
-                id: 'secops-summit-2026',
-                name: 'SecOps Summit 2026',
-                organization: 'SecOps',
-                date: '2026-03-20',
-                deadline: '2026-02-20',
-                location: 'Porto Alegre',
-                state: 'RS',
-                category: 'blue-team',
-                description: 'Summit dedicado a operações de segurança, monitoramento e resposta a incidentes.',
-                topics: ['SOC', 'Monitoramento', 'Resposta a Incidentes'],
-                cfpLink: 'https://secops-summit.com.br/cfp',
-                eventLink: 'https://secops-summit.com.br',
-                status: 'closing-soon',
-                daysUntilDeadline: 7
-            },
-            {
-                id: 'you-shot-sheriff-2026',
-                name: 'You Sh0t the Sheriff 2026',
-                organization: 'You Sh0t the Sheriff',
-                date: '2026-04-25',
-                deadline: '2026-03-15',
-                location: 'Brasília',
-                state: 'DF',
-                category: 'red-team',
-                description: 'Conferência focada em pentest, segurança ofensiva e hacking ético.',
-                topics: ['Pentest', 'Hacking Ético', 'Segurança Ofensiva'],
-                cfpLink: 'https://youshottesheriff.com.br/cfp',
-                eventLink: 'https://youshottesheriff.com.br',
-                status: 'open',
-                daysUntilDeadline: 1
             },
             {
                 id: 'forum-csirt-2026',
-                name: 'Fórum de CSIRTs Brasil 2026',
+                name: '14º Fórum de CSIRTs Brasil 2026',
                 organization: 'CERT.br',
-                date: '2026-04-15',
-                deadline: '2026-03-01',
-                location: 'Rio de Janeiro',
-                state: 'RJ',
-                category: 'dfir',
+                date: '2026-07-28',
+                deadline: '2026-05-03',
+                location: 'São Paulo',
+                state: 'SP',
+                category: 'Blue Team',
                 description: 'Fórum dedicado a resposta a incidentes e forense digital.',
                 topics: ['CSIRT', 'Forense Digital', 'Resiliência'],
-                cfpLink: 'https://csirt-forum.cert.br/cfp',
-                eventLink: 'https://csirt-forum.cert.br',
+                cfpLink: 'https://forum.cert.br/#cfp-forum',
+                eventLink: 'https://forum.cert.br/#cfp-forum',
                 status: 'open',
-                daysUntilDeadline: 16
             },
             {
-                id: 'cryptorave-2026',
-                name: 'CryptoRave 2026',
-                organization: 'CryptoRave',
+                id: 'workshop-misp',
+                name: ' 7º WorkShop MISP 2026',
+                organization: 'CERT.br',
                 date: '2026-05-30',
-                deadline: '2026-04-15',
+                deadline: '2026-05-03',
                 location: 'São Paulo',
                 state: 'SP',
-                category: 'grc',
-                description: 'Conferência sobre criptografia, privacidade e segurança digital.',
-                topics: ['Criptografia', 'Privacidade', 'Segurança Digital', 'Ativismo Digital'],
-                cfpLink: 'https://cryptorave.org/cfp',
-                eventLink: 'https://cryptorave.org',
+                category: 'Blue Team',
+                description: 'Workshop sobre o MISP.',
+                topics: ['MISP', 'CTI', 'Segurança Digital', 'CSIRT'],
+                cfpLink: 'https://forum.cert.br/#cfp-forum',
+                eventLink: 'https://forum.cert.br/#cfp-forum',
                 status: 'open',
-                daysUntilDeadline: 32
             },
             {
-                id: 'bsides-rio-2026',
-                name: 'BSides Rio 2026',
-                organization: 'BSides',
-                date: '2026-08-15',
-                deadline: '2026-07-01',
-                location: 'Rio de Janeiro',
-                state: 'RJ',
-                category: 'purple-team',
-                description: 'Conferência comunitária com foco em threat intelligence e análise de ameaças.',
-                topics: ['Threat Intelligence', 'Análise de Ameaças', 'CTI', 'Inteligência'],
-                cfpLink: 'https://bsides.org.br/rio',
-                eventLink: 'https://bsides.org.br',
-                status: 'upcoming',
-                daysUntilDeadline: 138
-            },
-            {
-                id: 'cloud-security-2026',
-                name: 'Cloud Security Summit 2026',
-                organization: 'Cloud Security',
-                date: '2026-06-10',
-                deadline: '2026-05-10',
-                location: 'São Paulo',
-                state: 'SP',
-                category: 'cloud',
-                description: 'Summit dedicado a segurança em cloud computing, AWS, Azure e GCP.',
-                topics: ['Cloud Security', 'AWS', 'Azure', 'GCP'],
-                cfpLink: 'https://cloudsecurity-summit.com.br/cfp',
-                eventLink: 'https://cloudsecurity-summit.com.br',
-                status: 'open',
-                daysUntilDeadline: 57
-            },
-            {
-                id: 'appsec-brazil-2026',
-                name: 'AppSec Brazil 2026',
-                organization: 'OWASP',
-                date: '2026-07-25',
-                deadline: '2026-06-15',
-                location: 'São Paulo',
-                state: 'SP',
-                category: 'orange-team',
-                description: 'Conferência focada em segurança de aplicações e DevSecOps.',
+                id: 'bsides-recife',
+                name: 'BSides Recife 2026',
+                organization: 'BSides Recife',
+                date: '2026-06-06',
+                deadline: '2026-04-10',
+                location: 'Recife',
+                state: 'PE',
+                category: 'Cibersegurança',
+                description: 'O coração do evento está em unir a cena de segurança de Recife, fazendo com que essa comunidade se torne cada vez mais forte e unida.',
                 topics: ['AppSec', 'DevSecOps', 'Segurança de Aplicações'],
-                cfpLink: 'https://appsec.org.br/cfp',
-                eventLink: 'https://appsec.org.br',
+                cfpLink: 'https://docs.google.com/forms/d/e/1FAIpQLSfYC4YtYPQ2581m910YzQ0EHDS6CXrmwkigTW0PmC7YIEd2Kw/viewform',
+                eventLink: 'https://www.bsidesrecife.com.br/',
                 status: 'open',
-                daysUntilDeadline: 93
             },
             {
                 id: 'network-security-2026',
@@ -677,7 +650,6 @@
                 cfpLink: 'https://netsecurity-summit.com.br/cfp',
                 eventLink: 'https://netsecurity-summit.com.br',
                 status: 'upcoming',
-                daysUntilDeadline: 170
             }
         ];
 
@@ -691,11 +663,18 @@
             setupEventListeners();
             updateStats();
             document.getElementById('lastUpdate').textContent = `>> Última atualização: ${new Date().toLocaleDateString('pt-BR')}`;
+            
+            // Atualizar a cada minuto para manter os dias atualizados
+            setInterval(() => {
+                renderEvents();
+                updateStats();
+            }, 60000); // 60 segundos
         }
 
         // Popular estados
         function populateStates() {
-            const states = [...new Set(CFP_EVENTS.map(e => e.state))].sort();
+            const processedEvents = processEvents();
+            const states = [...new Set(processedEvents.map(e => e.state))].sort();
             const stateSelect = document.getElementById('stateSelect');
             states.forEach(state => {
                 const option = document.createElement('option');
@@ -731,7 +710,8 @@
             }
 
             const allTags = new Set();
-            CFP_EVENTS.forEach(event => {
+            const processedEvents = processEvents();
+            processedEvents.forEach(event => {
                 event.topics.forEach(topic => allTags.add(topic));
             });
 
@@ -784,6 +764,29 @@
             renderEvents();
         }
 
+        // Processar eventos e calcular daysUntilDeadline
+        function processEvents() {
+            return CFP_EVENTS.map(event => {
+                const deadline = event['Prazo Final para Submissão:'] || event.deadline;
+                const daysUntil = calculateDaysUntilDeadline(deadline);
+                
+                // Determinar status baseado em daysUntilDeadline
+                let status = event.status;
+                if (daysUntil < 0) {
+                    status = 'closed';
+                } else if (daysUntil <= 7 && daysUntil > 0) {
+                    status = 'closing-soon';
+                }
+                
+                return {
+                    ...event,
+                    deadline: deadline,
+                    daysUntilDeadline: daysUntil,
+                    status: status
+                };
+            });
+        }
+
         // Renderizar eventos
         function renderEvents() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -791,7 +794,8 @@
             const state = document.getElementById('stateSelect').value;
             const status = document.getElementById('statusSelect').value;
 
-            const filtered = CFP_EVENTS.filter(event => {
+            const processedEvents = processEvents();
+            const filtered = processedEvents.filter(event => {
                 const matchesSearch = !searchTerm || 
                     event.name.toLowerCase().includes(searchTerm) ||
                     event.organization.toLowerCase().includes(searchTerm);
@@ -823,19 +827,19 @@
                         <div class="event-title">${event.name}</div>
                         <span class="event-category">${getCategoryLabel(event.category)}</span>
                         <span class="event-status status-${event.status}">${getStatusLabel(event.status)}</span>
-                        <div class="event-org">$ org: ${event.organization}</div>
+                        <div class="event-org">🏢 ${event.organization}</div>
                         <div class="event-description">${event.description}</div>
                         <div class="event-dates">
-                            <div>$ evento: ${formatDate(event.date)}</div>
-                            <div>$ deadline: ${formatDate(event.deadline)}</div>
-                            <div>$ dias restantes: ${event.daysUntilDeadline}</div>
+                            <div>📅 Quando: ${formatDate(event.date)}</div>
+                            <div>⏰ Prazo de submissão: ${formatDate(event.deadline)}</div>
+                            ${event.daysUntilDeadline >= 0 ? `<div>⌛ Tempo restante: ${event.daysUntilDeadline} ${event.daysUntilDeadline === 1 ? 'dia' : 'dias'}</div>` : `<div style="color: #ff4444;">❌ Prazo encerrado</div>`}
                         </div>
-                        <div class="event-location">$ local: ${event.location} (${event.state})</div>
+                        <div class="event-location">📍 ${event.location} - ${event.state}</div>
                         <div class="event-topics">
                             ${event.topics.map(topic => `<span class="event-topic">${topic}</span>`).join('')}
                         </div>
                         <div class="event-links">
-                            <a href="${event.cfpLink}" target="_blank" class="event-link">CFP</a>
+                            ${event.daysUntilDeadline >= 0 ? `<a href="${event.cfpLink}" target="_blank" class="event-link">CFP</a>` : ''}
                             <a href="${event.eventLink}" target="_blank" class="event-link">Evento</a>
                         </div>
                     </div>
@@ -851,7 +855,8 @@
             const state = document.getElementById('stateSelect').value;
             const status = document.getElementById('statusSelect').value;
 
-            const filtered = CFP_EVENTS.filter(event => {
+            const processedEvents = processEvents();
+            const filtered = processedEvents.filter(event => {
                 const matchesSearch = !searchTerm || 
                     event.name.toLowerCase().includes(searchTerm) ||
                     event.organization.toLowerCase().includes(searchTerm);
@@ -881,24 +886,24 @@
 
         function getCategoryLabel(category) {
             const labels = {
-                'red-team': 'RED TEAM',
-                'blue-team': 'BLUE TEAM',
-                'purple-team': 'PURPLE TEAM',
-                'orange-team': 'ORANGE TEAM',
-                'cloud': 'CLOUD',
-                'network': 'NETWORK',
-                'dfir': 'DFIR',
-                'grc': 'GRC'
+                'red-team': '🔴 Segurança Ofensiva',
+                'blue-team': '🔵 Defesa',
+                'purple-team': '🟣 Threat Intel',
+                'orange-team': '🟠 Segurança de Apps',
+                'cloud': '☁️ Cloud',
+                'network': '🌐 Redes',
+                'dfir': '🔍 Forense',
+                'grc': '📋 Governança'
             };
             return labels[category] || category;
         }
 
         function getStatusLabel(status) {
             const labels = {
-                'open': 'ABERTO',
-                'closing-soon': 'ENCERRANDO',
-                'closed': 'FECHADO',
-                'upcoming': 'EM BREVE'
+                'open': '🟢 Aberto',
+                'closing-soon': '🟡 Encerrando em breve',
+                'closed': '🔴 Encerrado',
+                'upcoming': '🔵 Em breve'
             };
             return labels[status] || status;
         }
