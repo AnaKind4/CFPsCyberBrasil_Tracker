@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CFPs Cyber Brasil</title>
+    <title>CFPs Cyber Brasil 2026</title>
     <style>
         * {
             margin: 0;
@@ -466,7 +466,7 @@
         <!-- Header -->
         <header>
             <h1>$ CFP_CYBERSECURITY_EVENTS</h1>
-            <p class="subtitle">> Consolidado dos CFPs (Call For Papers) em aberto para Eventos de Cibersegurança no Brasil</p>
+            <p class="subtitle">> Consolidado de CFPs (Call For Papers) abertos para Eventos de Cibersegurança no Brasil</p>
             <p class="stats" id="stats">> Total de eventos: 0 | Filtrados: 0</p>
         </header>
 
@@ -478,20 +478,7 @@
                     <label class="filter-label">$ buscar:</label>
                     <input type="text" id="searchInput" placeholder="evento, organização...">
                 </div>
-                <div class="filter-group">
-                    <label class="filter-label">$ categoria:</label>
-                    <select id="categorySelect">
-                        <option value="">-- todas --</option>
-                        <option value="red-team">Red Team</option>
-                        <option value="blue-team">Blue Team</option>
-                        <option value="purple-team">Purple Team</option>
-                        <option value="orange-team">Orange Team</option>
-                        <option value="cloud">Cloud</option>
-                        <option value="network">Network</option>
-                        <option value="dfir">DFIR</option>
-                        <option value="grc">GRC</option>
-                    </select>
-                </div>
+
                 <div class="filter-group">
                     <label class="filter-label">$ estado:</label>
                     <select id="stateSelect">
@@ -531,11 +518,10 @@
         <div class="cta-section">
             <p class="cta-title">$ Quer divulgar seu evento?</p>
             <p class="cta-description">
-                Sentiu falta de algum evento com CFP aberto? É organizador de alguum evento de cibersegurança e deseja que seu CFP seja listado aqui?,
-                entre em contato comigo pelo LinkedIn. Vamos fortalecer a comunidade de segurança brasileira juntos!
+                Sentiu falta de algum evento com CFP aberto? É organizador de alguum evento de cibersegurança e deseja que seu CFP seja listado aqui?, entre em contato comigo pelo LinkedIn. Vamos fortalecer a comunidade de segurança brasileira juntos!
             </p>
             <a href="https://www.linkedin.com/in/anacarolinamarinho21/" target="_blank" class="cta-button">
-                💼 Conecte-se comigo no LinkedIn
+                💼 Conecte comigo no LinkedIn
             </a>
         </div>
 
@@ -687,7 +673,7 @@
         // Setup listeners
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', renderEvents);
-            document.getElementById('categorySelect').addEventListener('change', renderEvents);
+
             document.getElementById('stateSelect').addEventListener('change', renderEvents);
             document.getElementById('statusSelect').addEventListener('change', renderEvents);
             document.getElementById('tagSearchInput').addEventListener('input', handleTagSearch);
@@ -790,7 +776,7 @@
         // Renderizar eventos
         function renderEvents() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const category = document.getElementById('categorySelect').value;
+
             const state = document.getElementById('stateSelect').value;
             const status = document.getElementById('statusSelect').value;
 
@@ -800,7 +786,7 @@
                     event.name.toLowerCase().includes(searchTerm) ||
                     event.organization.toLowerCase().includes(searchTerm);
                 
-                const matchesCategory = !category || event.category === category;
+                const matchesCategory = true;
                 const matchesState = !state || event.state === state;
                 const matchesStatus = !status || event.status === status;
                 const matchesTags = selectedTags.size === 0 || 
@@ -851,7 +837,7 @@
 
         function updateStats() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const category = document.getElementById('categorySelect').value;
+
             const state = document.getElementById('stateSelect').value;
             const status = document.getElementById('statusSelect').value;
 
@@ -861,7 +847,7 @@
                     event.name.toLowerCase().includes(searchTerm) ||
                     event.organization.toLowerCase().includes(searchTerm);
                 
-                const matchesCategory = !category || event.category === category;
+                const matchesCategory = true;
                 const matchesState = !state || event.state === state;
                 const matchesStatus = !status || event.status === status;
                 const matchesTags = selectedTags.size === 0 || 
@@ -876,7 +862,6 @@
 
         function resetFilters() {
             document.getElementById('searchInput').value = '';
-            document.getElementById('categorySelect').value = '';
             document.getElementById('stateSelect').value = '';
             document.getElementById('statusSelect').value = '';
             selectedTags.clear();
